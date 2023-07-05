@@ -1,35 +1,46 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Header from "./components/Commen/Header";
+import {
+  Home,
+  Auth,
+  RegisterPage,
+  ForgotPassword,
+  ResetPassword,
+  Admin,
+} from "./layouts";
+import Message from "./components/Commen/Message";
+import PrivateRoute from "./components/Commen/PrivateRoute";
 
-function App() {
-  const [count, setCount] = useState(0)
-
+const App = () => {
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+      <Router>
+        <Header />
+        <ToastContainer />
+        <main>
+          <Routes>
+            <Route exact path="/" element={<Home />} />
+            <Route path="/auth" element={<Auth />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/password/forgot" element={<ForgotPassword />} />
+            <Route path="/password/reset/:id" element={<ResetPassword />} />
+            <Route
+              path="/message"
+              element={<Message message="Please Check Your Inbox" />}
+            />
 
-export default App
+            {/* Private Routes */}
+            <Route path="" element={<PrivateRoute />}>
+              <Route path="/admin/dashboard" exact element={<Admin />} />
+            </Route>
+          </Routes>
+        </main>
+      </Router>
+    </>
+  );
+};
+
+export default App;
